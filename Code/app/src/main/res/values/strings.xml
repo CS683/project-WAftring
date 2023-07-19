@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Certificate Inspector</string>
+    <string name="default_certstore">Select Certificate Store</string>
+</resources>
