@@ -3,11 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/certificate_store">
+    app:startDestination="@id/certificateStoreFragment">
 
     <fragment
-        android:id="@+id/certificate_store"
+        android:id="@+id/certificateStoreFragment"
         android:name="bu.edu.cs683.waftring.certificateinspector.CertificateStoreView"
         android:label="fragment_certificate_store"
-        tools:layout="@layout/fragment_certificate_store" />
+        tools:layout="@layout/fragment_certificate_store">
+        <action
+            android:id="@+id/action_certificateStoreView_to_certDetailFragment"
+            app:destination="@id/certificateDetailFragment">
+            <argument
+                android:name="certId"
+                app:argType="integer"/>
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/certificateDetailFragment"
+        android:name="bu.edu.cs683.waftring.certificateinspector.CertificateDetails"
+        android:label="fragment_certificate_detail"
+        tools:layout="@layout/fragment_certificate_details"/>
+
 </navigation>

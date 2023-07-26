@@ -24,7 +24,7 @@ class CertificateStoreViewModel : ViewModel, Parcelable {
         return certificateStores.map { it.name }
     }
 
-    public fun getCertsInStore(storeName : String) : List<Certificate> {
+    public fun getCertsInStore(storeName : String) : List<MCertificate> {
         return certificateStores.filter{ certificateStore -> certificateStore.name == storeName }[0].certificates
     }
 

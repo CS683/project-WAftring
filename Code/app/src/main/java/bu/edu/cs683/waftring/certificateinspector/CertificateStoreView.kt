@@ -1,6 +1,5 @@
 package bu.edu.cs683.waftring.certificateinspector
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,30 +9,52 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.Spinner
-import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import bu.edu.cs683.waftring.certificateinspector.databinding.FragmentCertificateStoreBinding
 
-class CertificateStoreView : Fragment(R.layout.fragment_certificate_store) {
+class CertificateStoreView : Fragment() {
+    private var _binding: FragmentCertificateStoreBinding? = null
+    private val binding get() = _binding!!
+    private var columnCount = 1
     private val TAG = "CSV"
     private lateinit var spnStore : Spinner
-    private lateinit var svCerts : ScrollView
-    private lateinit var llCerts : LinearLayout
     private var lastStore : String = "N/A"
-    companion object {
-        fun newInstance() = CertificateStoreView()
-    }
 
     private lateinit var viewModel: CertificateStoreViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        MDebug.enter()
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            columnCount = it.getInt(ARG_COLUMN_COUNT)
+        }
+        MDebug.exit()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        MDebug.enter()
+        _binding = FragmentCertificateStoreBinding.inflate(inflater, container, false)
+        MDebug.exit()
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         MDebug.enter()
         viewModel = CertificateStoreViewModel()
         super.onViewCreated(view, savedInstanceState)
+        binding.rvCertList?.apply {
+            layoutManager = when {
+                columnCount <= 1 -> LinearLayoutManager(context)
+                else -> GridLayoutManager(context, columnCount)
+            }
+            adapter = CertificateRecyclerViewAdapter(viewModel.getCertsInStore(lastStore))
+        }
 
-        svCerts = view.findViewById<ScrollView>(R.id.svCerts)
-        llCerts = view.findViewById<LinearLayout>(R.id.llCerts)
         spnStore = view.findViewById<Spinner>(R.id.spnStore)
 
         var adapter = ArrayAdapter<String>(this.requireContext(), android.R.layout.simple_spinner_item, viewModel.getCertStoreNames())
@@ -45,7 +66,6 @@ class CertificateStoreView : Fragment(R.layout.fragment_certificate_store) {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 MDebug.enter()
                 Log.i(TAG, "index: " + p2 + " id: " + p3)
-                displayCertsInStore()
                 MDebug.exit()
             }
 
@@ -56,21 +76,17 @@ class CertificateStoreView : Fragment(R.layout.fragment_certificate_store) {
                 MDebug.exit()
             }
         }
-        displayCertsInStore()
         MDebug.exit()
     }
 
-    fun displayCertsInStore() {
-        var storeName : String = spnStore.selectedItem.toString()
-        if(storeName != lastStore) {
-            llCerts.removeAllViews()
-            for (certs in viewModel.getCertsInStore(storeName)) {
-                var tv = TextView(this.requireContext())
-                tv.setText(certs.type)
-                llCerts.addView(tv)
+    companion object {
+        const val ARG_COLUMN_COUNT = "column-count"
+        @JvmStatic
+        fun newInstance(columnCount : Int) =
+            CertificateStoreView().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_COLUMN_COUNT, columnCount)
+                }
             }
-            lastStore = storeName
-        }
     }
-
 }
