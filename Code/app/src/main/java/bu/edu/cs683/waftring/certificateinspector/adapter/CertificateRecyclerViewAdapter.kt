@@ -1,4 +1,4 @@
-package bu.edu.cs683.waftring.certificateinspector
+package bu.edu.cs683.waftring.certificateinspector.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,10 +7,16 @@ import androidx.cardview.widget.CardView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import bu.edu.cs683.waftring.certificateinspector.databinding.FragmentCertificateCardBinding
+import bu.edu.cs683.waftring.certificateinspector.datalayer.CertificateDetail
+import java.lang.RuntimeException
 
-class CertificateRecyclerViewAdapter(private val certificates : List<MCertificate>)
+class CertificateRecyclerViewAdapter(private val onCertificateClick : (CertificateDetail) -> Unit)
     : RecyclerView.Adapter<CertificateRecyclerViewAdapter.ViewHolder>() {
 
+    private val certificates = mutableListOf<CertificateDetail>()
+    interface OnCertificateClickListener {
+        fun onCertificateClick(certificateDetail: CertificateDetail)
+    }
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -25,18 +31,34 @@ class CertificateRecyclerViewAdapter(private val certificates : List<MCertificat
     ) {
         val certificate = certificates[position]
         holder.idView.text = (certificate.id + 1).toString()
-        holder.contentView.text = certificate.cert.type
+        holder.contentView.text = certificate.serialNumber
         holder.cardView.setOnClickListener{
-            val action = CertificateStoreViewDirections.
-            actionCertificateStoreViewToCertDetailFragment(position)
-            it.findNavController().navigate(action)
+            onCertificateClick(certificate)
         }
     }
 
     override fun getItemCount() : Int = certificates.size
 
-    override fun onBindViewHolder(holder: CertificateRecyclerViewAdapter.ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+    fun getCertificate(pos : Int) : CertificateDetail {
+        if(certificates.size > 0)
+            return certificates[pos]
+        else
+            return CertificateDetail(-1, "No certificates available", null)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val cert = certificates[position]
+        holder.idView.text = (cert.id + 1).toString()
+        holder.contentView.text = "Lorem Ipsum"
+        holder.cardView.setOnClickListener {
+            onCertificateClick(cert)
+        }
+    }
+
+    fun replaceItems(it: List<CertificateDetail>) {
+        certificates.clear()
+        certificates.addAll(it)
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(binding: FragmentCertificateCardBinding) : RecyclerView.ViewHolder(binding.root) {

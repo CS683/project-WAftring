@@ -7,8 +7,8 @@
 
     <fragment
         android:id="@+id/certificateStoreFragment"
-        android:name="bu.edu.cs683.waftring.certificateinspector.CertificateStoreView"
-        android:label="fragment_certificate_store"
+        android:name="bu.edu.cs683.waftring.certificateinspector.fragments.CertificateStoreFragment"
+        android:label="CertificateStoreFragment"
         tools:layout="@layout/fragment_certificate_store">
         <action
             android:id="@+id/action_certificateStoreView_to_certDetailFragment"
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/certificateDetailFragment"
-        android:name="bu.edu.cs683.waftring.certificateinspector.CertificateDetails"
+        android:name="bu.edu.cs683.waftring.certificateinspector.fragments.CertificateDetailsFragment"
         android:label="fragment_certificate_detail"
         tools:layout="@layout/fragment_certificate_details"/>
 

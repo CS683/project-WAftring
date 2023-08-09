@@ -6,7 +6,7 @@
         android:id="@+id/cert_store_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".CertificateStoreView">
+        tools:context=".fragments.CertificateStoreFragment">
 
         <Spinner
             android:id="@+id/spnStore"
@@ -22,7 +22,7 @@
             android:layout_marginTop="78dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:context=".CertificateStoreView"
+            tools:context=".fragments.CertificateStoreFragment"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/fragment_certificate_card"/>
 
