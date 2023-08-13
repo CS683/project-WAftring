@@ -47,6 +47,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+    implementation 'org.bouncycastle:bcprov-jdk15on:+' // Use the latest version
+    implementation 'org.bouncycastle:bcpkix-jdk15on:+' // NOTE this is only used if we are creating the dummy cert
     //noinspection GradleCompatible
     implementation 'com.android.support:design:28.0.0'
     implementation 'androidx.core:core-ktx:+'

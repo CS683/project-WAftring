@@ -11,8 +11,10 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import bu.edu.cs683.waftring.certificateinspector.MDebug
@@ -62,15 +64,6 @@ class CertificateStoreFragment : Fragment() {
         MDebug.exit()
         return binding.root
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if(context is CertificateStoreFragment.OnCertificateClickListener) {
-            onCertificateClickListener = context
-        } else {
-            throw RuntimeException("I've done something wrong")
-        }
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         MDebug.enter()
         super.onViewCreated(view, savedInstanceState)
@@ -79,8 +72,6 @@ class CertificateStoreFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity()).get(CurCertificateViewModel::class.java)
         listViewModel = ViewModelProvider(this).get(CurCertificateStoreViewModel::class.java)
 
-
-
         binding.rvCertList?.apply {
             layoutManager = when {
                 columnCount <= 1 -> LinearLayoutManager(context)
@@ -88,7 +79,8 @@ class CertificateStoreFragment : Fragment() {
             }
             myAdapter = CertificateRecyclerViewAdapter {
                 certificateDetail -> viewModel.setCurCertificate(certificateDetail)
-                onCertificateClickListener?.onCertificateClick(certificateDetail)
+                var navController = view.findNavController()
+                navController.navigate(R.id.action_certificateStoreView_to_certDetailFragment)
             }
 
             this.adapter = myAdapter

@@ -30,8 +30,8 @@ class CertificateRecyclerViewAdapter(private val onCertificateClick : (Certifica
         payloads: MutableList<Any>
     ) {
         val certificate = certificates[position]
-        holder.idView.text = (certificate.id + 1).toString()
-        holder.contentView.text = certificate.serialNumber
+        //holder.idView.text = (certificate.id + 1).toString()
+        holder.contentView.text = certificate.getFormattedSerialNumber()
         holder.cardView.setOnClickListener{
             onCertificateClick(certificate)
         }
@@ -48,7 +48,7 @@ class CertificateRecyclerViewAdapter(private val onCertificateClick : (Certifica
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cert = certificates[position]
-        holder.idView.text = (cert.id + 1).toString()
+//        holder.idView.text = (cert.id + 1).toString()
         holder.contentView.text = "Lorem Ipsum"
         holder.cardView.setOnClickListener {
             onCertificateClick(cert)
@@ -62,7 +62,7 @@ class CertificateRecyclerViewAdapter(private val onCertificateClick : (Certifica
     }
 
     inner class ViewHolder(binding: FragmentCertificateCardBinding) : RecyclerView.ViewHolder(binding.root) {
-        val idView: TextView = binding.certIdView
+        //val idView: TextView = binding.certIdView
         val contentView: TextView = binding.certNameView
         val cardView: CardView = binding.certCard
 

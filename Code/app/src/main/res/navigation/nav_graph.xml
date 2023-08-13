@@ -13,9 +13,6 @@
         <action
             android:id="@+id/action_certificateStoreView_to_certDetailFragment"
             app:destination="@id/certificateDetailFragment">
-            <argument
-                android:name="certId"
-                app:argType="integer"/>
         </action>
     </fragment>
 
